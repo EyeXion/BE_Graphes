@@ -209,8 +209,7 @@ public class Path {
      * Compute the length of this path (in meters).
      * 
      * @return Total length of the path (in meters).
-     * 
-     * @deprecated Need to be implemented.
+     * .
      */
     public float getLength() {
     	float res = 0;
@@ -236,8 +235,10 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public double getTravelTime(double speed) {
-        // TODO:
-        return 0;
+    	double res = 0;
+    	speed = speed/3.6; //In meters-per-second
+    	res = this.getLength()/speed;
+        return res;
     }
 
     /**
