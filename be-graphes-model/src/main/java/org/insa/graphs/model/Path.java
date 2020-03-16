@@ -53,12 +53,22 @@ public class Path {
      * 
      * @deprecated Need to be implemented.
      */
-    public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
-            throws IllegalArgumentException {
-        List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
-        return new Path(graph, arcs);
+    public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes) throws IllegalArgumentException {
+    		int i = 1;
+    		Node current = nodes.get(0);
+    		if (!graph.getNodes().contains(current)) {
+    			throw new IllegalArgumentException();
+    		}
+			while (i < nodes.size()) {
+				if (!graph.getNodes().contains(nodes.get(i))) {
+					throw new IllegalArgumentException();
+			} else {
+				
+			}
     }
+    	List<Arc> arcs = new ArrayList<Arc>();
+		return new Path(graph, arcs);
+}
 
     /**
      * Concatenate the given paths.
