@@ -55,20 +55,40 @@ public class Path {
      */
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes) throws IllegalArgumentException {
     		int i = 1;
-    		Node current = nodes.get(0);
-    		if (!graph.getNodes().contains(current)) {
-    			throw new IllegalArgumentException();
+    		if (nodes.size() == 0) {
+    			return new Path(graph);
+    		} else if (nodes.size() == 1) {
+    			return new Path(graph, nodes.get(0));
     		}
-			while (i < nodes.size()) {
-				if (!graph.getNodes().contains(nodes.get(i))) {
-					throw new IllegalArgumentException();
-			} else {
-				
-			}
+    		else {
+        		Node current = nodes.get(0);
+	    		if (!graph.getNodes().contains(current)) {
+	    			throw new IllegalArgumentException();
+	    		}
+	        	List<Arc> arcs = new ArrayList<Arc>();
+				while (i < nodes.size()) {
+					if (!graph.getNodes().contains(nodes.get(i))) {
+						throw new IllegalArgumentException();
+					} 
+					Arc[] array_arcs = current.getSuccessors().toArray(new Arc[0]);
+					Arc shortest = null;
+					for (Arc a : array_arcs) {
+						if (a.getDestination().equals(nodes.get(i))) {
+							if (shortest == null || a.getLength() < shortest.getLength()){
+								shortest = a;
+							}
+						}
+					}
+					if (shortest == null) {
+						throw new IllegalArgumentException();
+					}
+					arcs.add(shortest);
+					current = nodes.get(i);
+					i++;
+				}
+			return new Path(graph, arcs);
+    		}
     }
-    	List<Arc> arcs = new ArrayList<Arc>();
-		return new Path(graph, arcs);
-}
 
     /**
      * Concatenate the given paths.
