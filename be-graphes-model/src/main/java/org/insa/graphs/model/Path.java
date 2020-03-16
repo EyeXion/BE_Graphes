@@ -201,8 +201,31 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public boolean isValid() {
-        // TODO:
-        return false;
+    	boolean res = true;
+    	if (arcs.size() == 0 || arcs.size() == 1) {
+    		res = true;
+    	} else {
+    		Node current = arcs.get(0).getOrigin();
+    		boolean Still_ok = true;
+    		int i = 1;
+    		
+    		if (current.compareTo(this.getOrigin()) != 0 ) {
+    			Still_ok = false;
+    			res = false;
+    		}
+    		current = arcs.get(0).getDestination();
+    		while (Still_ok && i < arcs.size()) {
+    			if (current.compareTo(arcs.get(i).getOrigin()) != 0 ) {
+    				Still_ok = false;
+    				res = false;
+    			} else {
+    				current = arcs.get(i).getDestination();
+    				i++;
+    			}
+    		}
+    		
+    	}
+    	return res;
     }
 
     /**
@@ -232,7 +255,6 @@ public class Path {
      * @return Time (in seconds) required to travel this path at the given speed (in
      *         kilometers-per-hour).
      * 
-     * @deprecated Need to be implemented.
      */
     public double getTravelTime(double speed) {
     	double res = 0;
