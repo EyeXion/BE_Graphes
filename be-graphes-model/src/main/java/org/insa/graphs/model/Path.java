@@ -198,7 +198,6 @@ public class Path {
      * 
      * @return true if the path is valid, false otherwise.
      * 
-     * @deprecated Need to be implemented.
      */
     public boolean isValid() {
     	boolean res = true;
@@ -269,11 +268,16 @@ public class Path {
      * 
      * @return Minimum travel time to travel this path (in seconds).
      * 
-     * @deprecated Need to be implemented.
      */
     public double getMinimumTravelTime() {
-        // TODO:
-        return 0;
+    	double res = 0;
+    	double speed;
+    	int i;
+    	
+    	for (i =0; i<arcs.size(); i++) {
+    		res += this.arcs.get(i).getMinimumTravelTime();
+    	}
+    	return res;
     }
 
 }
