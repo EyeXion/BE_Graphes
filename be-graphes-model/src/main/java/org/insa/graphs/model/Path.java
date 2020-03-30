@@ -329,7 +329,6 @@ public class Path {
      */
     public double getMinimumTravelTime() {
     	double res = 0;
-    	double speed;
     	int i;
     	
     	for (i =0; i<arcs.size(); i++) {

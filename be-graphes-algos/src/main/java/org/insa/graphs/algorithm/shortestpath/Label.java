@@ -1,11 +1,12 @@
 package org.insa.graphs.algorithm.shortestpath;
 
 import org.insa.graphs.model.Node;
+
 import org.insa.graphs.model.Arc;
 
 
 
-public class Label {
+public class Label implements java.lang.Comparable<Label>{
 	protected Node sommet_courant;
 	
 	protected boolean marque;
@@ -37,8 +38,8 @@ public class Label {
 		this.marque = true;
 	}
 	
-	public void setPere(double cout) {
-		this.marque = true;
+	public void setPere(Arc pere) {
+		this.pere = pere;
 	}
 	
 	public Node getSommet() {
@@ -49,4 +50,24 @@ public class Label {
 		return pere;
 	}
 	
+	public int compareTo(Label o) throws NullPointerException, ClassCastException{
+		if (o.getClass() != this.getClass()) {
+			throw new ClassCastException();
+		}
+		if (o == null) {
+			throw new NullPointerException();
+		}
+		int res;
+		if (this.getCost() < o.getCost()) {
+			res = -1;
+		}
+		else if (this.getCost() == o.getCost()){
+			res = 0;
+		}
+		else {
+			res = 1;
+		}
+		
+	return res;
+	}
 }
