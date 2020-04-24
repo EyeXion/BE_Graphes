@@ -58,11 +58,11 @@ public class Label implements java.lang.Comparable<Label>{
 			throw new NullPointerException();
 		}
 		int res;
-		if (this.getCost() < o.getCost()) {
-			res = -1;
-		}
-		else if (this.getCost() == o.getCost()){
+		if (this.getSommet().getId() == o.getSommet().getId()) {
 			res = 0;
+		}
+		else if (this.getCost() < o.getCost()) {
+			res = -1;
 		}
 		else {
 			res = 1;
