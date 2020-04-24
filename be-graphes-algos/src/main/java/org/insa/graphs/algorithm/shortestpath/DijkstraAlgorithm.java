@@ -114,18 +114,18 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        	System.out.println("Le path de solution est valide");
 	        }
 	        if (data.getMode() == Mode.LENGTH) {
-	        	float cout_final;
-	        	cout_final = path_solution.getLength(); 
+	        	int cout_final;
+	        	cout_final =  (int) path_solution.getLength() * 1000; 
 	        	System.out.println("Cout path de base :" + labels[data.getDestination().getId()].getCost() + "Cout solution" + cout_final);
-	        	if (cout_final == labels[data.getDestination().getId()].getCost()) {
+	        	if (cout_final ==(int) labels[data.getDestination().getId()].getCost()*1000) {
 	        		System.out.println("C'est le bon cout !");
 	        	}
 	        }
 	        else if (data.getMode() == Mode.TIME) {
-	        	double cout_final;
-	        	cout_final = path_solution.getMinimumTravelTime();
+	        	int cout_final;
+	        	cout_final = (int) path_solution.getMinimumTravelTime()*1000;
 	        	System.out.println("Cout path de base :" + labels[data.getDestination().getId()].getCost() + " Cout solution" + cout_final);
-	        	if (cout_final == labels[data.getDestination().getId()].getCost()) {
+	        	if (cout_final == (int) labels[data.getDestination().getId()].getCost()*1000) {
 	        		System.out.println("C'est le bon cout !");
 	        	}
 	        }
