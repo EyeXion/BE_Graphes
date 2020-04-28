@@ -50,6 +50,15 @@ public class Label implements java.lang.Comparable<Label>{
 		return pere;
 	}
 	
+	public double getTotalCost() {
+		return this.getCost();
+	}
+	
+	public double getCoutEstime() {
+		return 0;
+	}
+	
+	
 	public int compareTo(Label o) throws NullPointerException, ClassCastException{
 		if (o.getClass() != this.getClass()) {
 			throw new ClassCastException();
@@ -61,11 +70,14 @@ public class Label implements java.lang.Comparable<Label>{
 		if (this.getSommet().getId() == o.getSommet().getId()) {
 			res = 0;
 		}
-		else if (this.getCost() < o.getCost()) {
+		else if (this.getTotalCost() < o.getTotalCost()) {
+			res = -1;
+		}
+		else if (this.getTotalCost() == o.getTotalCost() && this.getCoutEstime() < o.getCoutEstime()){
 			res = -1;
 		}
 		else {
-			res = 1;
+			return 1;
 		}
 		
 	return res;

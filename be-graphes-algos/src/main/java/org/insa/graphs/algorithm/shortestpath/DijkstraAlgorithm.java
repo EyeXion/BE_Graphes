@@ -19,21 +19,16 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     public DijkstraAlgorithm(ShortestPathData data) {
         super(data);
     }
-
-    @Override
-    protected ShortestPathSolution doRun() {
-        final ShortestPathData data = getInputData();
-        ShortestPathSolution solution = null;
-        List<Node> list = data.getGraph().getNodes();
-        Label[]  labels = new Label[list.size()];
-        Node origine = data.getOrigin();
-        BinaryHeap<Label> heap = new BinaryHeap<Label>();
-        boolean updated = false;
-        boolean not_finished = true;
-        boolean first = true;
-        double cout_precedent = 0;
-        boolean doable = true;
-        
+    
+    protected Label last;
+    
+    protected BinaryHeap<Label> heap;
+    
+    protected Label[] labels;
+    
+    public void init(List<Node> list, Node origine, Node destination, double max_speed) {
+    	heap = new BinaryHeap<Label>();
+    	labels = new Label[list.size()];
         for (Node node : list) {
         	Label aux = new Label(node);
         	labels[node.getId()] = aux;
@@ -42,12 +37,43 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         		heap.insert(labels[node.getId()]);
         	}
         }
+    }
+    
+    public void solution(ShortestPathData data) {
+    	last = labels[data.getDestination().getId()];
+    }
+
+    @Override
+    protected ShortestPathSolution doRun() {
+        final ShortestPathData data = getInputData();
+        double max_speed;
+        if (data.getMode() == Mode.LENGTH) {
+        	max_speed = 1;
+        }
+        else {
+        	max_speed = data.getMaximumSpeed();
+        	if (max_speed == -1) {
+        		max_speed = data.getGraph().getGraphInformation().getMaximumSpeed();
+        	}
+        	max_speed = max_speed/3.6;
+        }
+        ShortestPathSolution solution = null;
+        List<Node> list = data.getGraph().getNodes();
+        Node origine = data.getOrigin();
+        boolean updated = false;
+        boolean not_finished = true;
+        boolean first = true;
+        double cout_precedent = 0;
+        boolean doable = true;
+        this.init(list, origine,data.getDestination(),max_speed);
+        int compteur = 0;
         
         while (not_finished) {
         	try {
+        		compteur++;
 	            Label min = heap.deleteMin();
 	        	notifyNodeMarked(min.getSommet());
-	        	if (cout_precedent > min.getCost()) {
+	        	if (cout_precedent > min.getTotalCost()) {
 	        		System.out.println("Cout marqués pas croissant !");
 	        	}
 	        	cout_precedent = min.getCost();
@@ -96,7 +122,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         else {	
 	        not_finished = true;
 	        ArrayList<Arc> final_list = new ArrayList<Arc>();
-	        Label last = labels[data.getDestination().getId()];
+	        this.solution(data);
 	        
 	        while (not_finished) {
 	        	final_list.add(0,last.getPere());
@@ -131,6 +157,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        }
 	        solution = new ShortestPathSolution(data,AbstractSolution.Status.FEASIBLE,path_solution);
         }
+        System.out.println("Nb de sommets marqués : " + compteur);
         return solution;
     }
 }
