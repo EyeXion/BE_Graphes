@@ -5,7 +5,6 @@ import org.insa.graphs.algorithm.utils.EmptyPriorityQueueException;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import org.insa.graphs.model.Arc;
 import org.insa.graphs.model.Node;
@@ -27,6 +26,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     protected Label[] labels;
     
     public void init(List<Node> list, Node origine, Node destination, double max_speed) {
+    	System.out.println("Algo de Dijkstra");
     	heap = new BinaryHeap<Label>();
     	labels = new Label[list.size()];
         for (Node node : list) {
@@ -45,6 +45,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
     @Override
     protected ShortestPathSolution doRun() {
+    	long start = System.currentTimeMillis();
         final ShortestPathData data = getInputData();
         double max_speed;
         if (data.getMode() == Mode.LENGTH) {
@@ -57,6 +58,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	}
         	max_speed = max_speed/3.6;
         }
+        int max_size_heap = 0;
         ShortestPathSolution solution = null;
         List<Node> list = data.getGraph().getNodes();
         Node origine = data.getOrigin();
@@ -69,6 +71,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         int compteur = 0;
         
         while (not_finished) {
+        	if (max_size_heap < heap.size()) {
+        		max_size_heap = heap.size();
+        	}
         	try {
         		compteur++;
 	            Label min = heap.deleteMin();
@@ -134,15 +139,15 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        	}
 	        }
 	        final_list.remove(0);
-	        System.out.println(final_list);
+	        //System.out.println(final_list);
 	        Path path_solution = new Path(data.getGraph(),final_list);
 	        if (path_solution.isValid()) {
-	        	System.out.println("Le path de solution est valide");
+	        	//System.out.println("Le path de solution est valide");
 	        }
 	        if (data.getMode() == Mode.LENGTH) {
 	        	int cout_final;
 	        	cout_final =  (int) path_solution.getLength() * 1000; 
-	        	System.out.println("Cout path de base :" + labels[data.getDestination().getId()].getCost() + "Cout solution" + cout_final);
+	        	//System.out.println("Cout path de base :" + labels[data.getDestination().getId()].getCost() + "Cout solution" + cout_final);
 	        	if (cout_final ==(int) labels[data.getDestination().getId()].getCost()*1000) {
 	        		System.out.println("C'est le bon cout !");
 	        	}
@@ -150,14 +155,17 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        else if (data.getMode() == Mode.TIME) {
 	        	int cout_final;
 	        	cout_final = (int) path_solution.getMinimumTravelTime()*1000;
-	        	System.out.println("Cout path de base :" + labels[data.getDestination().getId()].getCost() + " Cout solution" + cout_final);
+	        	//System.out.println("Cout path de base :" + labels[data.getDestination().getId()].getCost() + " Cout solution" + cout_final);
 	        	if (cout_final == (int) labels[data.getDestination().getId()].getCost()*1000) {
 	        		System.out.println("C'est le bon cout !");
 	        	}
 	        }
 	        solution = new ShortestPathSolution(data,AbstractSolution.Status.FEASIBLE,path_solution);
         }
+        System.out.println("Taille max du tas : "+max_size_heap);
         System.out.println("Nb de sommets marqués : " + compteur);
+        long time = System.currentTimeMillis() - start;
+        System.out.println("Temps de calcul : "+time+"   ms");
         return solution;
     }
 }

@@ -8,7 +8,7 @@ import org.insa.graphs.model.Node;
 public class AStarAlgorithm extends DijkstraAlgorithm {
 	
 	public void init(List<Node> list, Node origine, Node destination,double max_speed) {
-		System.out.println("Je suis dans l'init de A*");
+		System.out.println("Algo de A*");
     	heap = new BinaryHeap<Label>();
     	labels = new LabelStar[list.size()];
     	Node first = list.get(0) ;
